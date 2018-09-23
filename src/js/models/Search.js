@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {key} from '../config';
 
 export default class Search {
 
@@ -9,7 +10,7 @@ export default class Search {
 
     async getResults(query) {
 
-        const key = '2d6c6a2442d2c79591ecc7a9a6aba1d9';
+        
 
         try {
 

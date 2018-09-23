@@ -6,24 +6,15 @@
 //https://www.food2fork.com/api/search
 //import axios from 'axios';
 
-/*
-async  function getResults(query) {
-    const key = '2d6c6a2442d2c79591ecc7a9a6aba1d9';
-    try {   
-    const res = await axios(`https://www.food2fork.com/api/search?key=${key}&q=${query}`);
-    const recipes = res.data.recipes;
-    console.log(recipes);    
-    }
-catch(error) {
-alert(error); 
-}
-};
-getResults('bacon');
-*/
 
 import Search from './models/Search';
+import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
-import {elements, renderLoader, clearLoader} from './views/base';
+import {
+    elements,
+    renderLoader,
+    clearLoader
+} from './views/base';
 
 
 
@@ -38,6 +29,8 @@ Global state of the app
 
 */
 
+/* SEARCH CONTROLLER */
+
 const state = {};
 
 const controlSearch = async () => {
@@ -46,36 +39,36 @@ const controlSearch = async () => {
 
     const query = searchView.getInput();
     console.log(query);
-    
-    if(query) {
-        
+
+    if (query) {
+
         //new search object and add to state
-        
+
         state.search = new Search(query)
-        
+
         //prepare UI for results - TODO
-        
+
         searchView.clearInput();
         searchView.clearResults();
-    
+
         renderLoader(elements.searchRes);
-        
-        
+
+
         //search for recipes
-        
+
         await state.search.getResults();
-        
+
         //render results on UI
-        
+
         searchView.renderResults(state.search.result);
         clearLoader();
-        
+
         //lock the results to the console
-        
+
         //console.log(state.search.result);
-        
+
     }
-    
+
 }
 
 elements.searchForm.addEventListener('submit', e => {
@@ -85,5 +78,21 @@ elements.searchForm.addEventListener('submit', e => {
 
 });
 
+elements.searchResPages.addEventListener('click', e => {
 
+    const btn = e.target.closest('.btn-inline');
+    console.log(btn);
+    if (btn) {
+        const goToPage = parseInt(btn.dataset.goto, 10);
+        searchView.clearResults();
+        searchView.renderResults(state.search.result, goToPage);
+      
+    }
+});
 
+/* RECIPE CONTROLLER */
+
+const r = new Recipe(47746);
+
+r.getRecipe();
+console.log(r);

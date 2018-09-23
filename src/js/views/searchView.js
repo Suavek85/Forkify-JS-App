@@ -7,15 +7,29 @@ import {
 
 export const getInput = () => elements.searchInput.value;
 
-export const clearInput = () => {elements.searchInput.value = '';};
+export const clearInput = () => {
+    elements.searchInput.value = '';
+};
 
-export const clearResults = () => {elements.searchResList.innerHTML = '';};
+export const clearResults = () => {
+    elements.searchResList.innerHTML = '';
+    elements.searchResPages.innerHTML = '';
+};
 
 const limitRecipeTitle = (title, limit = 17) => {
 
-    const newTitle =[];
+    const newTitle = [];
 
-    if (title.length > limit) { title.split(' ').reduce((acc, cur) => { if(acc + cur.length < limit)  { newTitle.push(cur);  } return acc + cur.length;},0); return `${newTitle.join(' ')}...` } return title;
+    if (title.length > limit) {
+        title.split(' ').reduce((acc, cur) => {
+            if (acc + cur.length < limit) {
+                newTitle.push(cur);
+            }
+            return acc + cur.length;
+        }, 0);
+        return `${newTitle.join(' ')}...`
+    }
+    return title;
 
 }
 
@@ -34,15 +48,15 @@ const renderRecipe = recipe => {
  </div>
 </a>
  </li>`;
-    
+
     elements.searchResList.insertAdjacentHTML('beforeend', markup);
 
 
 };
 
-const createButton = (page, type) => 
+const createButton = (page, type) =>
 
-`<button class="btn-inline results__btn--${type}" data-goto:${type === 'prev' ? page - 1: page + 1} >
+    `<button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1: page + 1} >
 <svg class="search__icon">
     <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
 </svg>
@@ -54,17 +68,19 @@ const createButton = (page, type) =>
 
 const renderButtons = (page, numResults, resPerPage) => {
 
-const pages = Math.ceil(numResults / resPerPage);
+    const pages = Math.ceil(numResults / resPerPage);
 
-let button;
+    let button;
 
-if (page === 1 && pages > 1) { button = createButton(page, 'next');} 
+    if (page === 1 && pages > 1) {
+        button = createButton(page, 'next');
+    } else if (page === pages && pages > 1) {
+        button = createButton(page, 'prev');
+    } else if (page < pages) {
+        button = `${createButton(page, 'next')}  ${createButton(page, 'prev')}`
+    }
 
-else if (page === pages && pages > 1) {button = createButton(page, 'prev');} 
-
-else if (page < pages) {button = `${createButton(page, 'next')}  ${createButton(page, 'prev')}`}
-
-elements.searchResPages.insertAdjacentHTML('afterbegin', button);
+    elements.searchResPages.insertAdjacentHTML('afterbegin', button);
 
 };
 
