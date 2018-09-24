@@ -93,6 +93,6 @@ export const renderResults = (recipes, page = 1, resPerPage = 10) => {
 
     recipes.slice(start, end).forEach(renderRecipe);
 
-    renderButtons(page, recipes.length, resPerPage)
+    renderButtons(page, recipes.length, resPerPage);
 
 };

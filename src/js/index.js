@@ -90,9 +90,47 @@ elements.searchResPages.addEventListener('click', e => {
     }
 });
 
+
+
 /* RECIPE CONTROLLER */
 
-const r = new Recipe(47746);
 
-r.getRecipe();
-console.log(r);
+const controlRecipe = async () => {
+
+const id = window.location.hash.replace('#', '');
+console.log(id);
+
+if(id)  {
+
+    //prepare UI for changes
+
+    //create new recipe object
+
+    state.recipe = new Recipe(id);
+
+    try {
+
+    //get recipe data
+
+    await state.recipe.getRecipe();
+
+    //calculate servings and time
+
+    state.recipe.calcServings();
+    state.recipe.calcTime();
+    console.log(state.recipe);
+
+}
+
+catch(error) {  alert('Error processing recipe');}
+
+
+}
+
+}
+
+//window.addEventListener('hashchange', controlRecipe);
+//window.addEventListener('load', controlRecipe);
+
+['hashchange', 'load'].forEach(event => addEventListener(event, controlRecipe));
+
