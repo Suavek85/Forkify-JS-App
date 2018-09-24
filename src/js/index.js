@@ -113,6 +113,7 @@ if(id)  {
     //get recipe data
 
     await state.recipe.getRecipe();
+    state.recipe.parseIngredients();
 
     //calculate servings and time
 
